@@ -1,0 +1,128 @@
+﻿<Window x:Class="SceneAnalyzer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:ControllersLibrary;assembly=ControllersLibrary"
+        Title="Scene Analyzer" Height="720" Width="1320" ResizeMode="NoResize"
+        Closing="Window_Closing" WindowStartupLocation="CenterScreen" Background="White" ShowInTaskbar="True">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="500" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="26" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="650" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Canvas Grid.Row="0" Grid.Column="0" Width="640" Height="480">
+            <Canvas Name="DefaultCanvas" Width="640" Height="480" Background="Green">
+                <Label Content="Kinect Disconnected" FontSize="16" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="402" Height="112" Canvas.Left="112" Canvas.Top="88" IsEnabled="True"></Label>
+                <Image Name="Video" Width="640" Height="480" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                <Ellipse Canvas.Left="0" Canvas.Top="0" Height="16" Name="salientPoint" Stroke="Black" Width="16" Fill="YellowGreen" Visibility="Hidden" />
+                <Ellipse Canvas.Left="0" Canvas.Top="0" Height="16" Name="ViewPoint" Stroke="Black" Width="16" Fill="Yellow" Visibility="Hidden" />
+            </Canvas>
+
+            <Canvas Height="480" Width="640" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Image Name="Depth" Height="480" Width="640"/>
+            </Canvas>
+            <Canvas Name="Canvas_Skeleton"  Height="480"  Width="640"  ClipToBounds="true"/>
+            <!--cliptoBounds elimina overflow dello skeleton-->
+            <Canvas Name="Canvas_Shore"     Height="480"  Width="640" />
+            <Canvas Name="Canvas_Robot"     Height="480"  Width="640" />
+        </Canvas>
+
+        <StackPanel Grid.Row="0" Grid.Column="1"  Name="SubjParamsPanel" Width="640" Height="480" Background="#FFC2E5F8">
+            <Label Content="Subject Parameters" FontSize="15" FontWeight="Bold" Foreground="Blue"/>
+            <ScrollViewer  HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Hidden" Width="640">
+                <StackPanel x:Name="LabelUpPanel" Orientation="Horizontal" Height="425" Margin="5,0,0,10">
+                    <Label x:Name="Subj1" FontSize="10" BorderBrush="Blue" BorderThickness="1" Width="210" />
+                    <Label x:Name="Subj2" FontSize="10" BorderBrush="Blue" BorderThickness="1" Width="210" Height="425" VerticalAlignment="Top"  />
+
+                    <Label x:Name="Subj3" FontSize="10" BorderBrush="Blue" BorderThickness="1" Width="210" />
+                    <Label x:Name="Subj4" FontSize="10" BorderBrush="Blue" BorderThickness="1" Width="210" />
+                    <Label x:Name="Subj5" FontSize="10" BorderBrush="Blue" BorderThickness="1" Width="210" />
+                    <Label x:Name="Subj6" FontSize="10" BorderBrush="Blue" BorderThickness="1" Width="210" />
+
+                </StackPanel>
+            </ScrollViewer>
+            <!--<StackPanel Name="LabelUpPanel" Orientation="Horizontal" Height="225" Margin="5,0">
+                <Label Name="Subj1" FontSize="10" BorderBrush="Blue" BorderThickness="1" Width="210" />
+                <Label Name="Subj2" FontSize="10" BorderBrush="Blue" BorderThickness="1" Width="210" />
+                <Label Name="Subj3" FontSize="10" BorderBrush="Blue" BorderThickness="1" Width="210" />
+            </StackPanel>
+
+            <StackPanel Name="LabelDownPanel" Orientation="Horizontal" Height="225" Margin="5,0">
+                <Label Name="Subj4" FontSize="10" BorderBrush="Blue" BorderThickness="1" Width="210" />
+                <Label Name="Subj5" FontSize="10" BorderBrush="Blue" BorderThickness="1" Width="210" />
+                <Label Name="Subj6" FontSize="10" BorderBrush="Blue" BorderThickness="1" Width="210" />
+            </StackPanel>-->
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+            <StackPanel Orientation="Vertical" Margin="5,0,0,0" Background="LightGreen" Width="355">
+                <StackPanel Name="Kinect">
+                    <Label Content="KINECT Setup" FontSize="15" FontWeight="Bold" Foreground="Blue" />
+                    <Separator Margin="5,0" Width="345" BorderBrush="Gray" HorizontalAlignment="Left" />
+                    <StackPanel Name="SetKinet" Margin="5,0">
+                        <local:SliderController Name="KinectTilt" ToolTip="We must wait at least 1 second, and call no more frequently than 15 times every 20 seconds" />
+
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Name="RecognitionEnginePanel" Width="160" Background="Wheat" Margin="5,0,0,0" IsEnabled="False">
+                <Label Content="Recognition Engines" FontSize="15" FontWeight="Bold" Foreground="Blue"/>
+                <Separator Margin="5,0" BorderBrush="Gray" Width="150" />
+                <StackPanel Orientation="Vertical" Margin="5,0">
+                    <CheckBox Name="FacialExpCheckbox" Content="Expressions" Margin="4" Checked="CheckboxFacialexp_Checked" Unchecked="CheckboxFacialexp_UnChecked" />
+                    <CheckBox Name="CheckboxSkeleton" Content="Skeleton" Margin="4" Checked="CheckboxSkeleton_Checked" Unchecked="CheckboxSkeleton_Unchecked" />
+                    <CheckBox Name="RecognitionCheckbox" Content="Rec. Subject" Margin="4" IsEnabled="True" />
+                    <CheckBox Name="FacetrackingCheckbox" Content="Face tracking" Margin="4" IsEnabled="True" />
+                    <CheckBox Name="CheckboxSpeech" Content="Speech recognition" Margin="4" IsEnabled="True" Checked="CheckboxSpeech_Checked" Unchecked="CheckboxSpeech_Unchecked"/>
+                    <CheckBox Name="SaliencyCheckbox" Content="Saliency" Margin="4" IsEnabled="False" Visibility="Hidden" Checked="Saliency_Checked" Unchecked="Saliency_Unchecked" />
+
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel Name="PanelShore" Margin="5,0,0,0" Background="PowderBlue" Width="115" IsEnabled="False">
+                <Label Content="Shore Engine" FontSize="15" FontWeight="Bold" Foreground="Blue"/>
+                <Separator Margin="5,0" BorderBrush="Gray" Width="150" />
+                <StackPanel Orientation="Horizontal" Margin="5,0">
+                    <Label Content="ErrorX :" Height="28" Width="50"></Label>
+                    <TextBox Name="ErrorX" Text="30" Height="22" Width="30" TextChanged="ErrorX_TextChanged" ToolTip="Acceted X-Error between SHORE and KinectSDK subject-indentification"></TextBox>
+                    <Label Content="px"></Label>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Grid.Column="1" Name="EnvirParamsPanel" Background="#6720DB7E" Margin="12,0,444,0">
+            <Label Content="Environment Parameters" FontSize="15" FontWeight="Bold" Foreground="Blue"/>
+            <Separator Margin="5,0" Width="630" BorderBrush="Gray" HorizontalAlignment="Left" />
+            <StackPanel Orientation="Horizontal" Margin="5,0" Height="100">
+                <Label Name="Envir0" FontSize="10" Margin="5"/>
+            </StackPanel>
+        </StackPanel>
+        <Image Grid.Column="1" Height="52" Width="224"  Grid.Row="1" HorizontalAlignment="Left"  VerticalAlignment="Top"  Source="Resources/logocp.png" Margin="392,27,0,0" />
+        <Image Grid.Column="1" Height="69" Width="131"  Grid.Row="1" HorizontalAlignment="Left"  VerticalAlignment="Top"  Source="Resources/marchio_unipi_pant541_288.gif" Margin="241,10,0,0" />
+        <Image Grid.Column="1" HorizontalAlignment="Left" Height="56" Margin="309,99,0,0" Grid.Row="1" VerticalAlignment="Top" Width="243" Source="Resources/logo1.png"/>
+
+
+        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Name="Yarp" Orientation="Horizontal">
+            <Ellipse Height="10" Name="YarpServerStatus" Fill="Red" Width="10" Margin="5,0,0,0" />
+            <Label Content="Yarp Server" FontSize="12" Foreground="Black" />
+            <Label Content="|" FontSize="16" Padding="0,0,0,0" Margin="5,0" Width="3" Height="26"></Label>
+            <Ellipse Height="10" Name="AttentionModStatus" Fill="Red" Width="10" Margin="5,0,0,0"  />
+            <Label Content="Attention Module " FontSize="12" Foreground="Black" />
+            <Label Content="|" FontSize="16" Padding="0,0,0,0" Margin="5,0" Width="3" Height="26" ></Label>
+            <Ellipse Height="10" Name="OutputSpeechStatus" Fill="Red" Width="10" Margin="5,0,0,0"  />
+            <Label Content="Speech Recognition" FontSize="12" Foreground="Black" />
+            <Label Content="|" FontSize="16" Padding="0,0,0,0" Margin="5,0" Width="3" Height="26"></Label>
+            <Label Content="UDP IP" FontSize="12" Foreground="Black" />
+            <TextBox Name="UDPhost" Width="150" Margin="5"></TextBox>
+            <Button Name="btnudp" Content="Send" Click="btnudp_Click" Width="50" Height="20"></Button>
+        </StackPanel>
+    </Grid>
+
+</Window>
+
