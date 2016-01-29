@@ -1,0 +1,3 @@
+[submodule "FACETools"]
+	path = FACETools
+	url = git@github.com:FACE-Team/FACETools.git
